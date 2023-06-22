@@ -142,11 +142,7 @@ dmypy.json
 # End of https://www.toptal.com/developers/gitignore/api/python
 /ocg_bot_v2/static/aicard/
 /ocg_bot_v2/extra/
-/ocg_bot_v2/plugins/__init__.py
 /data/
 /ocg_bot_v2/static/cards.cdb
-/ocg_bot_v2/libraries/Card.py
-/ocg_bot_v2/libraries/SqliteUtils.py
 /ocg_bot_v2/static/forbidden.json
-/ocg_bot_v2/static/pics/
 /ocg_bot_v2/static/pre-release.cdb

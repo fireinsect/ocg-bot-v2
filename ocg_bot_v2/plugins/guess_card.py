@@ -8,6 +8,8 @@ import nonebot
 import requests
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
+
+from ocg_bot_v2.libraries.Card import getRandomCard, getCard
 from ocg_bot_v2.libraries.globalMessage import guess_diff, static_path
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))  # 将父级目录加入执行目录列表
@@ -30,7 +32,7 @@ from ocg_bot_v2.libraries.guessManage import guessCardManager
 # print(card.deff)
 
 oriurl = "http://ocgcard.fireinsect.top/"
-cardUrl = "http://fireinsect.top/ocgBot/ocg-bot/src/static/pics/"
+cardUrl = static_path + "pics/"
 guessCard = on_command('游戏王猜卡', aliases={'猜一张卡'})
 aiguessCard = on_command('ai猜卡')
 gm = guessCardManager()
@@ -40,6 +42,7 @@ TIME = guess_diff[0].get("time")
 
 
 # ai猜卡常量
+# 本地图片应为 cardId+.jpg形式命名 存放在static/aicard 文件夹下
 # cardImgPath = static_path+"aicard/"
 # img_list = os.listdir(cardImgPath)
 
@@ -63,7 +66,7 @@ def verifySid(sid: str):
     except:
         return False
 
-
+# ai猜卡（自定义猜卡功能，发送本地图片进行猜卡）
 # @aiguessCard.handle()
 # async def _(bot: Bot, event: GroupMessageEvent, state: T_State):
 #     sessionId = None
@@ -85,18 +88,17 @@ def verifySid(sid: str):
 #     try:
 #         rand = random.randint(0, len(img_list))
 #         id = str(img_list[rand]).split('.')[0]
-#         url = oriurl + "searchCardId?cardId={0}".format(id)
-#         result = requests.get(url).text
-#         js = json.loads(result)
-#         li = json.dumps(list(js['data']['cards'])[0])
-#         card = json.loads(li, object_hook=Card)
+#         js = getCard(id)
+#         card = js.cards[0]
 #         state['card'] = card
+#         # 自定义卡图
 #         pics_url = cardImgPath + str(card.cardId) + ".jpg"
 #         image = Image.open(pics_url)
 #         print(card.name)
 #         state['time'] = TIME
+#         # 源卡图
 #         ori_pics_url = cardUrl + str(card.cardId) + ".jpg"
-#         ori_image = Image.open(BytesIO(requests.get(ori_pics_url).content))
+#         ori_image = Image.open(ori_pics_url)
 #         state['image'] = ori_image
 #         gm.UpdateLastSend(sessionId)
 #         await guessCard.send([
@@ -120,10 +122,9 @@ def verifySid(sid: str):
 #             MessageSegment.image(f"base64://{str(image_to_base64(state['image']), encoding='utf-8')}")
 #         ])
 #
-#     url = oriurl + "guessCard?name={0}".format(name)
-#     js = json.loads(requests.get(url).text)
+#     js = getCard(name)
 #     # card.name != js['data']['cards'][0]['name']
-#     if js['data']['cards'] is None or isGuessWin(js, card.name):
+#     if js.cards is None or isGuessWin(js, card.name):
 #         if state['time'] == 1:
 #             await guessCard.finish([
 #                 MessageSegment.at(user_id=event.sender.user_id),
@@ -178,14 +179,14 @@ async def _(bot: Bot, event: GroupMessageEvent, state: T_State):
     except PermissionError as e:
         await guessCard.finish(str(e))
     try:
-        url = oriurl + "randomCard"
-        result = requests.get(url).text
-        js = json.loads(result)
-        li = json.dumps(list(js['data']['cards'])[0])
-        card = json.loads(li, object_hook=Card)
+        js = getRandomCard()
+        card = js.cards[0]
         state['card'] = card
         pics_url = cardUrl + str(card.cardId) + ".jpg"
-        image = Image.open(BytesIO(requests.get(pics_url).content))
+        try:
+            image = Image.open(pics_url)
+        except Exception as e:
+            await guessCard.send("没找到对应图片~")
         re_image = image
         if "灵摆" in card.type:
             image = image.crop((30, 110, 370, 357))
@@ -202,7 +203,6 @@ async def _(bot: Bot, event: GroupMessageEvent, state: T_State):
             MessageSegment.image(f"base64://{str(image_to_base64(image), encoding='utf-8')}")
         ])
     except Exception as e:
-        print(e)
         await guessCard.finish("咿呀？启动失败了呢")
 
 
@@ -217,10 +217,9 @@ async def test_(bot: Bot, event: GroupMessageEvent, state: T_State):
             MessageSegment.image(f"base64://{str(image_to_base64(state['image']), encoding='utf-8')}")
         ])
 
-    url = oriurl + "guessCard?name={0}".format(name)
-    js = json.loads(requests.get(url).text)
+    js = getCard(name)
     # card.name != js['data']['cards'][0]['name']
-    if js['data']['cards'] is None or isGuessWin(js, card.name, name):
+    if js.cards is None or isGuessWin(js, card.name, name):
         if state['time'] == 1:
             await guessCard.finish([
                 MessageSegment.at(user_id=event.sender.user_id),

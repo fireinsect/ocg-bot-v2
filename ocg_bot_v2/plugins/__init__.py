@@ -20,6 +20,7 @@ async def nickNameInit():
         # 尝试读取
         with open(nick_path, 'r', encoding='utf-8') as f:
             nick_json = json.loads(f.read())['RECORDS']
+            logger.info(f'nickname.json 读取成功')
             for js in nick_json:
                 if js['NK_type'] == 0:
                     nick_name_0.append(js)
@@ -36,6 +37,7 @@ async def forbideInit():
         # 尝试读取
         with open(forbide_path, 'r', encoding='utf-8') as f:
             forbidden_json = json.loads(f.read())
+            logger.info(f'forbidden.json 读取成功')
             for js in forbidden_json:
                 forbidden.append(js)
     except Exception as e:

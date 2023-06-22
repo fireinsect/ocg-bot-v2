@@ -8,7 +8,7 @@ from nonebot.adapters.onebot.v11 import Event, Bot, GroupMessageEvent, PrivateMe
     GROUP_OWNER
 from nonebot import on_command
 
-from ocg_bot_v2.libraries.Card import getCard
+from ocg_bot_v2.libraries.Card import getCard, getRandomCard
 from ocg_bot_v2.libraries.searchManage import SearchManager
 from ocg_bot_v2.libraries.sendAction import *
 from ocg_bot_v2.libraries.permissionManage import PermissionManager
@@ -59,8 +59,6 @@ async def _(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()
             search_group = match.groups()
         state['name'] = search_group[0]
         state['page'] = search_group[1]
-        # url = oriurl + "getCard?name={0}&type={1}&page={2}".format(search_group[0], search_group[1], search_group[2])
-        # result = requests.get(url).text
         js = getCard(state['name'], state['page'])
     except Exception as e:
         print(e)
@@ -159,9 +157,7 @@ async def _(bot: Bot, event: Event, state: T_State):
     except PermissionError as e:
         await randomCard.finish(str(e))
     try:
-        url = oriurl + "randomCard"
-        result = requests.get(url).text
-        js = json.loads(result)
+        js = getRandomCard()
         pm.UpdateLastSend(sessionId)
     except Exception as e:
         await randomCard.finish("咿呀？卡组被送进异次元了呢~")
