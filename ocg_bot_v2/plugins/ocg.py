@@ -8,9 +8,11 @@ from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Event, Bot, GroupMessageEvent, PrivateMessageEvent, GROUP_ADMIN, \
     GROUP_OWNER
 from nonebot import on_command
-from ..libraries.searchManage import SearchManager
-from ..libraries.sendAction import *
-from ..libraries.permissionManage import PermissionManager
+
+from ocg_bot_v2.libraries.Card import getCard
+from ocg_bot_v2.libraries.searchManage import SearchManager
+from ocg_bot_v2.libraries.sendAction import *
+from ocg_bot_v2.libraries.permissionManage import PermissionManager
 
 oriurl = "http://ocgcard.fireinsect.top/"
 # oriurl = "http://localhost:3399/"
@@ -44,7 +46,7 @@ async def _(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()
         sessionId = 'user_' + str(event.user_id)
     if isinstance(event, GroupMessageEvent):
         sessionId = 'group_' + str(event.group_id)
-    regex = "(.+) (魔法|怪兽|陷阱)?([0-9]+)?"
+    regex = "(.+) ([0-9]+)?"
     text = str(args).strip()
     if text == "":
         await search_card.finish("请输入需要查询的卡名")
@@ -57,17 +59,16 @@ async def _(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()
             match = re.match(regex, text)
             search_group = match.groups()
         state['name'] = search_group[0]
-        state['type'] = search_group[1]
-        state['page'] = search_group[2]
-        url = oriurl + "getCard?name={0}&type={1}&page={2}".format(search_group[0], search_group[1], search_group[2])
-        result = requests.get(url).text
-        js = json.loads(result)
+        state['page'] = search_group[1]
+        # url = oriurl + "getCard?name={0}&type={1}&page={2}".format(search_group[0], search_group[1], search_group[2])
+        # result = requests.get(url).text
+        js = getCard(state['name'], state['page'])
     except Exception as e:
         await search_card.finish("咿呀？查询失败了呢")
-    if int(search_group[2]) > int(js['data']['pageNum']):
-        await search_card.finish("页码超出最大值" + "`" + str(js['data']['pageNum']) + "`")
+    if int(search_group[1]) > int(js.pageNum):
+        await search_card.finish("页码超出最大值" + "`" + str(js.pageNum) + "`")
     state['js'] = js
-    if js['data']['amount'] == 0:
+    if js.amount == 0:
         await sendNosearch(search_card)
     elif isinstance(event, PrivateMessageEvent):
         await send2(js, search_card)
@@ -91,7 +92,7 @@ async def _(bot: Bot, event: Event, state: T_State):
             typee = 1
         elif isinstance(event, GroupMessageEvent):
             typee = int(state['send_type'])
-        len = int(js['data']['amount'])
+        len = int(js.amount)
         chose = int(text)
         if 1 <= chose <= len:
             if typee == 1:
@@ -102,32 +103,28 @@ async def _(bot: Bot, event: Event, state: T_State):
                 await send3(js, search_card, chose)
     else:
         name = state['name']
-        type = state['type']
         page = int(state['page'])
-        url = None
-        print(text)
+        flag = None
         if text == "下一页":
-            if page == js['data']['pageNum']:
+            if page == js.pageNum:
                 await search_card.reject("欧尼酱~已经到最后一页了~")
             else:
                 page = page + 1
-                url = oriurl + "getCard?name={0}&type={1}&page={2}".format(name, type, page)
                 state['page'] = page
+                flag=1
         elif text == "上一页":
             if page == 1:
                 await search_card.reject("欧尼酱~已经是第一页了~")
             else:
                 page = page - 1
-                url = oriurl + "getCard?name={0}&type={1}&page={2}".format(name, type, page)
                 state['page'] = page
+                flag=1
         else:
             await search_card.finish()
-        if url is not None:
-            print("asdasda")
-            result = requests.get(url).text
-            js = json.loads(result)
+        if flag is not None:
+            js = getCard(name,str(page))
             state['js'] = js
-            if js['data']['amount'] == 0:
+            if js.amount == 0:
                 await sendNosearch(search_card)
             elif isinstance(event, PrivateMessageEvent):
                 await send2(js, search_card)
@@ -226,7 +223,7 @@ searchType = on_command("查卡方式")
 
 @searchType.handle()
 async def seartype(bot: Bot, event: GroupMessageEvent, state: T_State, args: Message = CommandArg()):
-    message=str(args)
+    message = str(args)
     state['sid'] = 'group_' + str(event.group_id)
     sid = str(state['sid'])
     if message.isdigit():

@@ -8,8 +8,8 @@ from nonebot import on_command
 from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Event, Bot, MessageSegment
 
-from ..libraries.globalMessage import static_path
-from ..libraries.image import image_to_base64
+from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.image import image_to_base64
 
 juexing = on_command('mai觉醒')
 jiaru = on_command('mai加入')

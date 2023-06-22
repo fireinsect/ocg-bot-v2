@@ -1,5 +1,4 @@
 import io
-import json
 
 import numpy
 import requests
@@ -10,8 +9,8 @@ from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Event, Bot, Message, MessageSegment
 from nonebot import on_command
 
-from ..libraries.globalMessage import static_path
-from ..libraries.image import image_to_base64
+from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.image import image_to_base64
 
 url = "https://sapi.moecube.com:444/ygopro/analytics/deck/type?type=day&source=mycard-athletic"
 # 测试数据

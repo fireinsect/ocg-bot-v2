@@ -8,18 +8,18 @@ import nonebot
 import requests
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
-from ..libraries.globalMessage import guess_diff, static_path
+from ocg_bot_v2.libraries.globalMessage import guess_diff, static_path
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))  # 将父级目录加入执行目录列表
-from ..libraries.image import *
-from ..libraries.tool import getRandom
+from ocg_bot_v2.libraries.image import *
+from ocg_bot_v2.libraries.tool import getRandom
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Event, GroupMessageEvent, MessageSegment, MessageEvent, \
     PrivateMessageEvent, \
     Message, GROUP_ADMIN, GROUP_OWNER
 from nonebot.typing import T_State
 from typing import Dict, Optional
-from ..libraries.guessManage import guessCardManager
+from ocg_bot_v2.libraries.guessManage import guessCardManager
 
 # test = '{"status":200,"msg":"获取成功","data":{"cards":[{"id":9107,"cardId":75109441,"name":"半蛇人 萨库兹","effect":"这张卡1个回合可以有1次变回里侧守备表示。这张卡反转时，对方场上的盖伏的全部魔法·陷阱卡翻开，确认后变回原来的盖伏形式。","zz":"爬虫类族","mainType":"怪兽","type":"怪兽 效果","level":"3 星","attribute":"地","atk":"800","def":"1400","jpName":"半蛇人サクズィー","enName":"Cobraman Sakuzy","forbidden":"-"}],"pageNum":1,"amount":1,"nowNum":1},"isSuccess":true}'
 # test2=json.loads(test)

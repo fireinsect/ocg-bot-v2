@@ -1,13 +1,11 @@
-import os.path
 
-import requests
 from nonebot.params import CommandArg
 from nonebot.typing import T_State
-from nonebot.adapters.onebot.v11 import Message, Event, Bot, MessageSegment, GroupRequestEvent, GroupMessageEvent
-from nonebot import on_command, on_request
-import re
-from ..libraries.image import *
-from ..libraries.raiseCard import draw_card_text
+from nonebot.adapters.onebot.v11 import Message, Event, Bot, MessageSegment
+from nonebot import on_command
+
+from ocg_bot_v2.libraries.image import *
+from ocg_bot_v2.libraries.raiseCard import draw_card_text
 
 jupai = on_command("举牌 ", aliases={"我要粉 ", "我要举牌 ", "粉 "})
 

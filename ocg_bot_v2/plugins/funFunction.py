@@ -3,8 +3,7 @@ import json
 
 from nonebot.params import CommandArg
 from nonebot.typing import T_State
-from nonebot.adapters.onebot.v11 import Message, Event, Bot, GroupMessageEvent, PrivateMessageEvent, GROUP_ADMIN, \
-    GROUP_OWNER
+from nonebot.adapters.onebot.v11 import Message, Bot, GroupMessageEvent
 from nonebot import on_command
 
 fakeMessage = on_command("伪造")

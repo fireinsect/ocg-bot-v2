@@ -38,7 +38,7 @@ class guessCardManager:
             return self.cfg
         except Exception as e:
             # 读取失败
-            logger.warning(f'setu_perm_cfg.json 读取失败, 尝试重建\n{e}')
+            logger.warning(f'json 读取失败, 尝试重建\n{e}')
             self.cfg = {}
             self.WriteCfg()
             return {}

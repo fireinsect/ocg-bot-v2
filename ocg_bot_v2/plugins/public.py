@@ -1,7 +1,4 @@
-import random
-import re
 
-from PIL import Image
 from nonebot import on_notice
 from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Message, Event, Bot, MessageSegment

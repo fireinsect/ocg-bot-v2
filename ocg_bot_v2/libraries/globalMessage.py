@@ -43,4 +43,7 @@ guess_diff = [
         'time': 3
     }
 ]
-static_path = Config.parse_obj(nonebot.get_driver().config).static_path
+try:
+    static_path = Config.parse_obj(nonebot.get_driver().config).static_path
+except:
+    static_path = "ocg_bot_v2/static/"

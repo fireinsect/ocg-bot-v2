@@ -7,10 +7,10 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Event, Message, MessageSegment
 from nonebot.typing import T_State
 
-from ..libraries.globalMessage import static_path
-from ..libraries.tool import hash
-from ..libraries.image import image_to_base64
-from ..libraries.sendAction import card_txt
+from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.tool import hash
+from ocg_bot_v2.libraries.image import image_to_base64
+from ocg_bot_v2.libraries.sendAction import card_txt
 
 wm_list = ['同调', '仪式', '融合', '超量', '链接', '灵摆', '顶 G', '重坑', '干饭', '开壶', '唠嗑', '摸鱼', '说书', '开包', '懒觉', '锻炼', '口胡']
 dailycard = on_command('今日游戏王', aliases={'今日卡运', '今日牌运'})
