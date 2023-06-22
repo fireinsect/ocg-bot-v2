@@ -1,12 +1,16 @@
+import copy
+import os.path
 import random
 import re
 
 import requests
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
+
+from .Card import CardResult
 from ..libraries.globalMessage import noSearchText, lanName
 from ..libraries.image import *
 
-static_url = "http://fireinsect.top/ocgBot/ocg-bot/src/static/pics/"
+static_url = static_path + "pics/"
 # 缩放比例
 PANTOGRAPH = 0.6
 
@@ -65,6 +69,13 @@ async def send(js, bot, event, func, num=0):
                 js.cards[num].cardId) + '.jpg'
             if img_exist(pics_url):
                 messageListAppend(js, pics_url, num, msg_list)
+            else:
+                jsex = CardResult()
+                jsex.amount = js.amount
+                jsex.pageNum = js.pageNum
+                jsex.nowNum = js.nowNum
+                jsex.cards = [js.cards[num]]
+                await messageListCreate(jsex, msg_list)
         elif js.amount == 1 and img_exist(pics_url):
             messageListAppend(js, pics_url, num, msg_list)
         else:
@@ -98,6 +109,13 @@ async def send2(js, func, num=0):
             js.cards[num].cardId) + '.jpg'
         if img_exist(pics_url):
             await func.finish(getAllMessage(js, pics_url, num))
+        else:
+            jsex = CardResult()
+            jsex.amount = js.amount
+            jsex.pageNum = js.pageNum
+            jsex.nowNum = js.nowNum
+            jsex.cards = [js.cards[num]]
+            await send_cards_byCard(jsex, func)
     elif js.amount == 1 and img_exist(pics_url):
         await func.finish(getAllMessage(js, pics_url, num))
     else:
@@ -117,6 +135,13 @@ async def send3(js, func, num=0):
             js.cards[num - 1].cardId) + '.jpg'
         if img_exist(pics_url):
             await func.finish(getPicOnlyMessage(js, num, pics_url))
+        else:
+            jsex = CardResult()
+            jsex.amount = js.amount
+            jsex.pageNum = js.pageNum
+            jsex.nowNum = js.nowNum
+            jsex.cards = [js.cards[num]]
+            await send_cards_byCard(jsex, func)
     elif js.amount == 1 and img_exist(pics_url):
         await func.finish(getPicOnlyMessage(js, num, pics_url))
     else:
@@ -127,7 +152,7 @@ async def send3(js, func, num=0):
 # 提供给合并格式的单卡
 def messageListAppend(js, url, num, msg_list):
     car = js.cards[num]
-    img = Image.open(BytesIO(requests.get(url).content))
+    img = Image.open(url)
     msg_list.append(Message([
         MessageSegment(
             "image",
@@ -185,7 +210,7 @@ def messageListCreate(js, msg_list):
 # 获取完整效果形式的Message
 def getAllMessage(js, url, num):
     car = js.cards[num]
-    img = Image.open(BytesIO(requests.get(url).content))
+    img = Image.open(url)
     return Message([
         MessageSegment(
             "image",
@@ -229,7 +254,7 @@ def getPicOnlyMessage(js, num, url):
 # =========判断============
 # 判断图片是否存在
 def img_exist(url):
-    return requests.head(url).status_code == requests.codes.ok
+    return os.path.exists(url)
 
 
 # =====================

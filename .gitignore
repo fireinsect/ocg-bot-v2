@@ -148,3 +148,5 @@ dmypy.json
 /ocg_bot_v2/libraries/Card.py
 /ocg_bot_v2/libraries/SqliteUtils.py
 /ocg_bot_v2/static/forbidden.json
+/ocg_bot_v2/static/pics/
+/ocg_bot_v2/static/pre-release.cdb

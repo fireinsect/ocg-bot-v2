@@ -1,6 +1,5 @@
 import json
 
-import nonebot
 from nonebot.params import CommandArg
 
 from nonebot.permission import SUPERUSER
@@ -64,6 +63,7 @@ async def _(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()
         # result = requests.get(url).text
         js = getCard(state['name'], state['page'])
     except Exception as e:
+        print(e)
         await search_card.finish("咿呀？查询失败了呢")
     if int(search_group[1]) > int(js.pageNum):
         await search_card.finish("页码超出最大值" + "`" + str(js.pageNum) + "`")

@@ -11,7 +11,7 @@ class SqliteUtils:
         return d
 
     def connect(self,db_file):
-        # 建立和数据库sample.db的连接
+        # 建立和数据库的连接
         conn = sqlite3.connect(db_file)
         # 使得查询结果以字典形式返回
         conn.row_factory = SqliteUtils.dict_factory

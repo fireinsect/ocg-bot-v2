@@ -46,9 +46,11 @@ async def forbideInit():
 
 async def init():
     logger.info("开始初始化")
+    if not os.path.exists(static_path+"pics"):
+        logger.info("未发现图片文件夹，已经创建")
+        os.mkdir(static_path+"pics")
     await nickNameInit()
     await forbideInit()
-
 
 driver = get_driver()
 driver.on_startup(init)
