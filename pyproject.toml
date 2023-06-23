@@ -1,7 +1,7 @@
 [project]
-name = "ocg-bot-V2"
+name = "ocg-bot-v2"
 version = "0.1.0"
-description = "ocg-bot-V2"
+description = "ocg-bot-v2"
 readme = "README.md"
 requires-python = ">=3.8, <4.0"
 
