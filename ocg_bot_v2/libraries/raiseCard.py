@@ -1,10 +1,10 @@
 from PIL import ImageFont, ImageDraw, Image
 
-from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.globalMessage import static_path, image_path,font_path
 
-cardpath = static_path + "card.jpg"
-card2path = static_path + "card2.jpg"
-fontpath = static_path + "msyh.ttc"
+cardpath = image_path + "card.jpg"
+card2path = image_path + "card2.jpg"
+fontpath = font_path + "msyh.ttc"
 
 
 def draw_card_text(text, p):

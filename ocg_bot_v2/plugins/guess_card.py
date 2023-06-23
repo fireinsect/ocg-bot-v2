@@ -31,7 +31,6 @@ from ocg_bot_v2.libraries.guessManage import guessCardManager
 # print(card.cardId)
 # print(card.deff)
 
-oriurl = "http://ocgcard.fireinsect.top/"
 cardUrl = static_path + "pics/"
 guessCard = on_command('游戏王猜卡', aliases={'猜一张卡'})
 aiguessCard = on_command('ai猜卡')

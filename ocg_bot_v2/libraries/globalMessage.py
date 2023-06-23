@@ -47,3 +47,8 @@ try:
     static_path = Config.parse_obj(nonebot.get_driver().config).static_path
 except:
     static_path = "ocg_bot_v2/static/"
+
+json_path = static_path + "json/"
+font_path = static_path + "fonts/"
+cdb_path = static_path + "cdb/"
+image_path = static_path + "images/"

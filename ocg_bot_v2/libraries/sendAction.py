@@ -7,7 +7,7 @@ import requests
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 
 from .Card import CardResult
-from ..libraries.globalMessage import noSearchText, lanName
+from ..libraries.globalMessage import noSearchText, lanName, static_path
 from ..libraries.image import *
 
 static_url = static_path + "pics/"
@@ -245,7 +245,7 @@ def getPicOnlyMessage(js, num, url):
             {
                 # "file": f"base64://{str(image_to_base64(Image.open('src/static/pics/' + str(js['data'][
                 # 'cards'][0]['cardId']) + '.jpg')), encoding='utf-8')}"
-                "file": f"base64://{str(image_to_base64(Image.open(BytesIO(requests.get(url).content))), encoding='utf-8')}"
+                "file": f"base64://{str(image_to_base64(url), encoding='utf-8')}"
             }
         )
     ])

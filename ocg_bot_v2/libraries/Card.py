@@ -5,27 +5,25 @@ import os.path
 from typing import Optional, Dict
 
 import requests
-from nonebot import logger
 
 from ocg_bot_v2.libraries.SqliteUtils import SqliteUtils
-from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.globalMessage import cdb_path
 from ocg_bot_v2.libraries.staticvar import forbidden, nick_name_0, nick_name_1
 
 sqlite = SqliteUtils()
 
 pre_flag = 0
 extra_flag = 0
-conn, cursor = sqlite.connect(static_path + "cards.cdb")
+conn, cursor = sqlite.connect(cdb_path + "cards.cdb")
 
-if os.path.exists(static_path + "pre-release.cdb"):
-    conn_pre, cursor_pre = sqlite.connect(static_path + "pre-release.cdb")
+if os.path.exists(cdb_path + "pre-release.cdb"):
+    conn_pre, cursor_pre = sqlite.connect(cdb_path + "pre-release.cdb")
     pre_flag = 1
 
-if os.path.exists(static_path + "extra_card.cdb"):
-    conn_extra, cursor_extra = sqlite.connect(static_path + "extra_card.cdb")
+if os.path.exists(cdb_path + "extra_card.cdb"):
+    conn_extra, cursor_extra = sqlite.connect(cdb_path + "extra_card.cdb")
     extra_flag = 1
 
-# conn, cursor = sqlite.connect("F:\CodeProject\PythonProject\ocg-bot-V2\ocg_bot_v2\static\cards.cdb")
 typeList = ['怪兽', '魔法', '陷阱']
 bg_url = "https://ygocdb.com/api/v0/?search="
 
@@ -106,7 +104,7 @@ class Card(Dict):
                     return str(self[item]) if str(self[item]) != "-2" else "?"
             if item == "deff":
                 if types[0] == "怪兽" and "连接" not in types:
-                    return str(self[item]) if str(self[item]) != "-2" else "?"
+                    return str(self['def']) if str(self['def']) != "-2" else "?"
             if item == "attribute":
                 return getAttribute(str(hex(self['attribute'])))
 
@@ -305,7 +303,6 @@ def nickNameMatch(name: str):
     return nameforsearch
 
 # a = SqliteUtils()
-# conn, cursor = a.connect("F:\CodeProject\PythonProject\ocg-bot-V2\ocg_bot_v2\static\cards.cdb")
 # name="访问"
 # cursor.execute(
 #     "select * from texts LEFT JOIN datas on texts.id = datas.id where texts.name like '%{0}%' GROUP BY texts.name;".format(name))

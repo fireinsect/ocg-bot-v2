@@ -13,8 +13,6 @@ from ocg_bot_v2.libraries.searchManage import SearchManager
 from ocg_bot_v2.libraries.sendAction import *
 from ocg_bot_v2.libraries.permissionManage import PermissionManager
 
-oriurl = "http://ocgcard.fireinsect.top/"
-# oriurl = "http://localhost:3399/"
 pm = PermissionManager()
 sm = SearchManager()
 

@@ -1,5 +1,4 @@
 
-import json
 
 from nonebot.params import CommandArg
 from nonebot.typing import T_State

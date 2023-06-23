@@ -1,21 +1,17 @@
-import copy
 import json
-import logging
 import os.path
-
-import requests
-from nonebot.typing import T_State
-from nonebot.adapters.onebot.v11 import Message, Event, Bot, MessageSegment, GroupRequestEvent, GroupMessageEvent
 from nonebot import  logger, get_driver
-import re
+
 
 from ocg_bot_v2.libraries.forbideGet import forbiddenGet
+from ocg_bot_v2.libraries.globalMessage import json_path, static_path
 from ocg_bot_v2.libraries.image import *
-from ocg_bot_v2.libraries.raiseCard import draw_card_text
-from ocg_bot_v2.libraries.staticvar import nick_name_0, nick_name_1, forbidden
+
+from ocg_bot_v2.libraries.staticvar import nick_name_0, nick_name_1, forbidden, daily_card
+
 
 async def nickNameInit():
-    nick_path = static_path + "nickname.json"
+    nick_path = json_path + "nickname.json"
     try:
         # 尝试读取
         with open(nick_path, 'r', encoding='utf-8') as f:
@@ -32,7 +28,7 @@ async def nickNameInit():
 
 
 async def forbideInit():
-    forbide_path = static_path + "forbidden.json"
+    forbide_path = json_path + "forbidden.json"
     try:
         # 尝试读取
         with open(forbide_path, 'r', encoding='utf-8') as f:
@@ -45,6 +41,19 @@ async def forbideInit():
         logger.warning(f'forbidden.json 读取失败,正在获取禁卡表')
         forbiddenGet()
 
+async def dailyInit():
+    nick_path = json_path + "daily_card.json"
+    try:
+        # 尝试读取
+        with open(nick_path, 'r', encoding='utf-8') as f:
+            daily_json = json.loads(f.read())
+            logger.info(f'daily_card.json 读取成功')
+            for daily in daily_json:
+                daily_card.append(daily)
+    except Exception as e:
+        # 读取失败
+        logger.warning(f'daily_card.json 读取失败')
+
 
 async def init():
     logger.info("开始初始化")
@@ -53,6 +62,7 @@ async def init():
         os.mkdir(static_path+"pics")
     await nickNameInit()
     await forbideInit()
+    await dailyInit()
 
 driver = get_driver()
 driver.on_startup(init)

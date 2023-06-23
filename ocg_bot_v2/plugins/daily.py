@@ -1,3 +1,4 @@
+import copy
 import datetime
 from io import BytesIO
 
@@ -7,15 +8,15 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Event, Message, MessageSegment
 from nonebot.typing import T_State
 
-from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.globalMessage import static_path, image_path,font_path
+from ocg_bot_v2.libraries.staticvar import daily_card
 from ocg_bot_v2.libraries.tool import hash
 from ocg_bot_v2.libraries.image import image_to_base64
 from ocg_bot_v2.libraries.sendAction import card_txt
 
 wm_list = ['同调', '仪式', '融合', '超量', '链接', '灵摆', '顶 G', '重坑', '干饭', '开壶', '唠嗑', '摸鱼', '说书', '开包', '懒觉', '锻炼', '口胡']
 dailycard = on_command('今日游戏王', aliases={'今日卡运', '今日牌运'})
-oriurl = "http://ocgcard.fireinsect.top/"
-obj = requests.get(oriurl + "searchDaily").json()['data']
+obj = daily_card
 lend = len(wm_list)
 
 
@@ -35,11 +36,11 @@ def getDailyPic(point: int, wm_value):
     card = obj[point % len(obj)]
     no = point % int(card['nums'])
     if card['type'] == "系列":
-        back_pic = Image.open(static_path + "daily_xilie.png")
+        back_pic = Image.open(image_path + "daily_xilie.png")
     else:
-        back_pic = Image.open(static_path + "daily_kapai.png")
-    url = f"http://ocgcard.daily.fireinsect.top/deck/{card['id']}/{card['id']}-{no}.jpg"
-    cardPic = Image.open(BytesIO(requests.get(url).content))
+        back_pic = Image.open(image_path + "daily_kapai.png")
+    url = static_path+f"deck/{card['id']}/{card['id']}-{no}.jpg"
+    cardPic = Image.open(url)
     proper_list = []
     envy_list = []
     for i in range(lend):
@@ -92,7 +93,7 @@ def getDailyText(point: int, wm_value):
 
 # ---图片拼接---
 # 通过不同path来指定字体
-font_path = static_path + "qmzl.ttf"
+font_path = font_path + "qmzl.ttf"
 # 星期显示字体
 fontWeek = ImageFont.truetype(font_path, 45)
 # 宜忌显示字体

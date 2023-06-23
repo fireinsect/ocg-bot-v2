@@ -143,6 +143,3 @@ dmypy.json
 /ocg_bot_v2/static/aicard/
 /ocg_bot_v2/extra/
 /data/
-/ocg_bot_v2/static/cards.cdb
-/ocg_bot_v2/static/forbidden.json
-/ocg_bot_v2/static/pre-release.cdb

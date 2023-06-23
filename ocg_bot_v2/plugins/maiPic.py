@@ -8,14 +8,14 @@ from nonebot import on_command
 from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Event, Bot, MessageSegment
 
-from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.globalMessage import image_path
 from ocg_bot_v2.libraries.image import image_to_base64
 
 juexing = on_command('mai觉醒')
 jiaru = on_command('mai加入')
 txApi = "https://q1.qlogo.cn/g?b=qq&s=5&nk="
-juexing_url = static_path+"juexing.png"
-jiaru_url = static_path+"jiaru.png"
+juexing_url = image_path+"juexing.png"
+jiaru_url = image_path+"jiaru.png"
 
 
 @juexing.handle()

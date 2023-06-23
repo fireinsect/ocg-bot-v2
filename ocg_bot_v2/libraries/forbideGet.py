@@ -4,7 +4,7 @@ import os
 from requests_html import HTMLSession, Element
 
 from ocg_bot_v2.libraries.SqliteUtils import SqliteUtils
-from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.globalMessage import json_path, cdb_path
 from ocg_bot_v2.libraries.staticvar import forbidden
 
 url = "https://www.db.yugioh-card.com/yugiohdb/forbidden_limited.action?request_locale=ja#list_forbidden"
@@ -21,7 +21,7 @@ rests = []
 # 准限制卡cid
 pres = []
 sqlite = SqliteUtils()
-conn, cursor = sqlite.connect(static_path + "cards.cdb")
+conn, cursor = sqlite.connect(cdb_path + "cards.cdb")
 
 
 def cidGet():
@@ -55,7 +55,7 @@ def insert(card_id, name, status):
 
 def WriteForbidden(js):
     # 写入数据
-    with open(static_path + "forbidden.json", 'w', encoding='utf-8') as f:
+    with open(json_path + "forbidden.json", 'w', encoding='utf-8') as f:
         f.write(json.dumps(js, ensure_ascii=False, indent=4))
 
 

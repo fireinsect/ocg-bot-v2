@@ -5,10 +5,10 @@ import nonebot
 from PIL import ImageFont, ImageDraw, Image
 from nonebot import Config
 
-from ocg_bot_v2.libraries.globalMessage import static_path
+from ocg_bot_v2.libraries.globalMessage import font_path,image_path
 
-fontpath = static_path+"msyh.ttc"
-background = Image.open(static_path+"background.png")
+fontpath = font_path+"msyh.ttc"
+background = Image.open(image_path+"background.png")
 
 
 def draw_text(img_pil, text, offset_x):
@@ -72,7 +72,7 @@ def text_to_image2(text, page_text):
 
 def text_to_image_with_back(text, page_text, title):
     font = ImageFont.truetype(fontpath, 28)
-    font_title = ImageFont.truetype(static_path+"qmzl.ttf", 50)
+    font_title = ImageFont.truetype(font_path+"qmzl.ttf", 50)
     font_page = ImageFont.truetype(fontpath, 30)
     padding = 30
     margin = 33
